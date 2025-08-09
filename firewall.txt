@@ -1,0 +1,112 @@
+firewalld is a firewall management tool used on Linux systems. It provides a dynamic interface to manage firewall rules.
+
+
+Basic steps for firewall how to list running service , start firewall, stop firewall, different zone
+
+
+if you r using kali Linux, install firewalld for testing.
+
+
+step 1 : sudo apt install firewalld -y
+
+
+##check the firewall status by following command.
+
+step 2 : sudo systemctl status firewalld
+
+op : disable,inactive firewall status
+
+
+## start the firewall by following commands
+
+step 3 : sudo systemctl start firewalld
+
+op : active,enable status
+
+## if want to start at boot time then use "enable" instead of start.
+
+step 4 = sudo systemctl enable firewalld
+
+## if wants to both enable at boot time and start  immediately
+
+step 5 = systemctl enable --now firewalld
+
+## check the rules of firewalld
+
+step 6 : firewall-cmd --list-all
+
+     we see like public(default,active) = this is zone
+
+op : just look for service which is enable like dhcp,ssh etc
+
+
+## to see all the zones
+
+step 7 : firewall-cmd --get-zones
+
+op : block.dmz,external,home,public etc
+
+
+## to see active zones
+
+step 8: firewall-cmd --get-active-zones
+
+op : public , interface: eth0
+
+
+## see firewall rules for specific zone
+
+step 9 : firewall-cmd --zones=public --list-all
+
+
+............................................................
+
+##  to add a service (temp) , after reload,it didn't save in config.
+
+step 1 : firewall-cmd --add-service=<service name>
+
+## to remove a service
+
+step 2: firewall-cmd --remove-service=<service name>
+
+## reload the config of firewall
+
+step 3 : firewall-cmd --reload
+
+
+## add permanent service
+
+step 4: firewall-cmd --add-service=<service name> --permanent
+
+## restart firewall service to change.
+
+step 5 : systemctl restart firewalld.service
+
+
+..........................................................
+
+add a port
+
+step 1: firewall-cmd --add-port=port/protocol  (--add-port=80/http)
+
+remove a port
+
+step 2: firewall-cmd --remove-port=port no/protocol  (--remove port=80/http)
+
+............................................................
+
+block incoming traffic from ip
+
+## add rich-rule 
+
+step 1 : firewall-cmd --add-rich-rule='rule family="ipv4" source address ="192.168.0.1" reject'
+
+to block outgoing traffic to a ip or url
+
+step 1 : firewall-cmd --direct --add-rule ipv4 filter OUTPUT 0 -d 157.240.242.35 -j DROP
+
+....................................................
+
+block ICMP incoming traffic
+
+step 1 : firewall-cmd --add-icmp-block-inversion
